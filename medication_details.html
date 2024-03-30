@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medication Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background-color: #f2f2f2;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #ddd;
+        }
+
+        .btn-danger {
+            background-color: #ff5252;
+            color: #fff;
+        }
+
+        .btn-danger:hover {
+            background-color: #e53935;
+        }
+
+        .btn-success {
+            background-color: #4caf50;
+            color: #fff;
+        }
+
+        .btn-success:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h2>Medication Details</h2>
+    <table border="2">
+        <thead>
+            <tr>
+                <th>Medicine Name</th>
+                <th>Dosage</th>
+                <th>Frequency</th>
+                <th>Start Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="medicationTable">
+            <!-- Medication details will be populated here -->
+        </tbody>
+    </table>
+    <script>
+        // Retrieve medication details from localStorage
+        let medications = JSON.parse(localStorage.getItem("medications")) || [];
+
+        // Function to delete a medication
+        function deleteMedication(index) {
+            medications.splice(index, 1);
+            localStorage.setItem("medications", JSON.stringify(medications));
+            updateMedicationTable();
+        }
+
+        // Function to set a reminder
+        function setReminder(index) {
+            const medication = medications[index];
+            const reminderTime = new Date(medication.start_date).getTime(); // Set the reminder time to the start date of the medication for demonstration purposes
+            const currentTime = new Date().getTime();
+
+            const timeUntilReminder = reminderTime - currentTime;
+            if (timeUntilReminder > 0) {
+                setTimeout(function() {
+                    alert("Reminder: It's time to take " + medication.name);
+                }, timeUntilReminder);
+            } else {
+                alert("You've missed the reminder for " + medication.name);
+            }
+        }
+
+        // Populate medication details in the table
+        const medicationTableBody = document.getElementById("medicationTable");
+        function updateMedicationTable() {
+            medicationTableBody.innerHTML = ""; // Clear the table before populating again
+            medications.forEach(function(medication, index) {
+                const row = `
+                    <tr>
+                        <td>${medication.name}</td>
+                        <td>${medication.dosage}</td>
+                        <td>${medication.frequency}</td>
+                        <td>${medication.start_date}</td>
+                        <td>
+                            <button onclick="setReminder(${index})">Set Reminder</button>
+                            <button onclick="deleteMedication(${index})">Delete</button>
+                        </td>
+                    </tr>
+                `;
+                medicationTableBody.innerHTML += row;
+            });
+        }
+        
+        updateMedicationTable(); // Call the function to initially populate the table
+    </script>
+</body>
+</html>

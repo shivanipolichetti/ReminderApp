@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicine Reminder App</title>
+    <style>
+          h1{
+            text-align: center;
+            color:green;
+            text-shadow: 5px 5px 5px lightgreen;
+          }
+          p{
+            font-weight: bold;
+            text-align: center;
+          }
+        .card-container {
+            width: 300px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #f9f9f9;
+        }
+
+        .card-container form label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .card-container form input[type="text"],
+        .card-container form input[type="date"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+
+        .card-container form button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .card-container form button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Medicine Reminder App</h1>
+        <p>Time: <span id="demo"></span></p>
+    </div>
+    <div class="card-container">
+        <form id="medform">
+            <label for="medname">Medicine name:</label>
+            <input type="text" id="medname" placeholder="" required><br>
+            <label for="meddosage">Dosage:</label>
+            <input type="text" id="meddosage" placeholder="" required><br>
+            <label for="medfrequency">Frequency:</label>
+            <input type="text" id="medfrequency" placeholder="" required><br>
+            <label for="startdate">Start Date:</label>
+            <input type="date" id="startdate" placeholder=""><br><br>
+            <button type="submit">Add medication</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById("medform").addEventListener("submit", function(event) {
+            event.preventDefault(); 
+            const medName = document.getElementById("medname").value;
+            const medDosage = document.getElementById("meddosage").value;
+            const medFrequency = document.getElementById("medfrequency").value;
+            const startDate = document.getElementById("startdate").value;
+            const medication = {
+                name: medName,
+                dosage: medDosage,
+                frequency: medFrequency,
+                start_date: startDate,
+                reminders: [] // Initialize reminders as an empty array
+            };
+
+            let medications = JSON.parse(localStorage.getItem("medications")) || [];
+            medications.push(medication);
+            localStorage.setItem("medications", JSON.stringify(medications));
+
+            // Clear the form
+            document.getElementById("medform").reset();
+
+            // Redirect to the medication details page
+            window.location.href = "medication_details.html";
+        });
+
+        let time = setInterval(myTimer, 1000);
+        function myTimer() {
+            const d = new Date();
+            document.getElementById("demo").innerHTML = d.toLocaleTimeString();
+        }
+    </script>
+</body>
+</html>
