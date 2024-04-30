@@ -5,84 +5,80 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medicine Reminder App</title>
     <style>
-        h1{
-            text-align: center;
-            color:green;
-            text-shadow: 5px 5px 5px lightgreen;
-          }
-          p{
-            font-weight: bold;
-            text-align: center;
-          }
-        .card-container {
-            width: 300px;
-            margin: 20px auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
             background-color: #f9f9f9;
         }
-
-        .card-container form label {
-            display: block;
-            margin-bottom: 10px;
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background-color: #ffffff;
         }
-
-        .card-container form input[type="text"],
-        .card-container form input[type="date"] {
-            width: 100%;
+        h1 {
+            text-align: center;
+            color: #5b9aa0;
+            text-shadow: 2px 2px 2px #d3d3d3;
+        }
+        label {
+            font-weight: bold;
+            color: #5b9aa0;
+        }
+        input[type="text"],
+        input[type="date"] {
+            width: calc(100% - 10px);
             padding: 8px;
-            margin-bottom: 15px;
+            margin: 8px 0;
             border: 1px solid #ccc;
-            border-radius: 3px;
+            border-radius: 5px;
             box-sizing: border-box;
+            color: #555;
         }
-
-        .card-container form button[type="submit"] {
+        button[type="submit"] {
             width: 100%;
             padding: 10px;
-            background-color: #4CAF50;
+            background-color: #5b9aa0;
             color: white;
             border: none;
-            border-radius: 3px;
+            border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
-
-        .card-container form button[type="submit"]:hover {
-            background-color: #45a049;
+        button[type="submit"]:hover {
+            background-color: #448e95;
         }
     </style>
 </head>
 <body>
-    <div>
+    <div class="container">
         <h1>Medicine Reminder App</h1>
-        <p>Time: <span id="demo"></span></p>
-    </div>
-    <div class="card-container">
-        <form id="medform">
-            <label for="medicine">Medicine name:</label>
-            <input type="text" id="medicine" placeholder="" required><br>
+        <form id="medForm">
+            <label for="medName">Medication Name:</label>
+            <input type="text" id="medName" placeholder="Enter medication name" required><br>
             <label for="dosage">Dosage:</label>
-            <input type="text" id="dosage" placeholder="" required><br>
+            <input type="text" id="dosage" placeholder="Enter dosage" required><br>
             <label for="frequency">Frequency:</label>
-            <input type="text" id="frequency" placeholder="" required><br>
-            <label for="start">Start Date:</label>
-            <input type="date" id="start" placeholder=""><br><br>
-            <button type="submit">Add medication</button>
+            <input type="text" id="frequency" placeholder="Enter frequency" required><br>
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate" placeholder=""><br><br>
+            <button type="submit">Add Medication</button>
         </form>
     </div>
     <script>
-        document.getElementById("medform").addEventListener("submit", function(event) {
+        document.getElementById("medForm").addEventListener("submit", function(event) {
             event.preventDefault(); 
-            const medName = document.getElementById("medicine").value;
-            const medDosage = document.getElementById("dosage").value;
-            const medFrequency = document.getElementById("frequency").value;
-            const startDate = document.getElementById("start").value;
+            const medName = document.getElementById("medName").value;
+            const dosage = document.getElementById("dosage").value;
+            const frequency = document.getElementById("frequency").value;
+            const startDate = document.getElementById("startDate").value;
             const medication = {
                 name: medName,
-                dosage: medDosage,
-                frequency: medFrequency,
+                dosage: dosage,
+                frequency: frequency,
                 start_date: startDate,
                 reminders: [] // Initialize reminders as an empty array
             };
@@ -92,17 +88,11 @@
             localStorage.setItem("medications", JSON.stringify(medications));
 
             // Clear the form
-            document.getElementById("medform").reset();
+            document.getElementById("medForm").reset();
 
             // Redirect to the medication details page
             window.location.href = "medication_details.html";
         });
-
-        let time = setInterval(myTimer, 1000);
-        function myTimer() {
-            const d = new Date();
-            document.getElementById("demo").innerHTML = d.toLocaleTimeString();
-        }
     </script>
 </body>
 </html>
